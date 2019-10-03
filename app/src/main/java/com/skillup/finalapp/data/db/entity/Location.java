@@ -11,8 +11,7 @@ public class Location {
     double lat;
     double lng;
 
-    public Location(int id, double lat, double lng) {
-        this.id = id;
+    public Location(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
     }
