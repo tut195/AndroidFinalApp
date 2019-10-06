@@ -8,8 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.skillup.finalapp.data.db.LocationDatabase;
-import com.skillup.finalapp.data.db.dao.LocationDao;
+import com.skillup.finalapp.data.LocationRepository;
 import com.skillup.finalapp.data.db.entity.Location;
 import com.skillup.finalapp.utils.LocationMaper;
 
@@ -22,12 +21,15 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
 
 public class MapViewModel extends ViewModel {
 
 
-    private LocationDatabase db = LocationDatabase.getAppDatabase();
-    private LocationDao locationDao = db.locationDao();
+//    private LocationDatabase db = LocationDatabase.getAppDatabase();
+//    private LocationDao locationDao = db.locationDao();
+//    private CompositeDisposable disposable = new CompositeDisposable();
+
     private CompositeDisposable disposable = new CompositeDisposable();
 
 
@@ -35,9 +37,11 @@ public class MapViewModel extends ViewModel {
     private LiveData<List<MarkerOptions>> mapMarkers;
     private MutableLiveData<List<MarkerOptions>> _mapMarkers = new MutableLiveData();
 
+    @Inject
+    public MapViewModel(LocationRepository locationRepository) {
+//        Single<List<Location>> locations = locationDao.getAll();
+        Single<List<Location>> locations = locationRepository.getAllLocactions();
 
-    public MapViewModel() {
-        Single<List<Location>> locations = locationDao.getAll();
 
         Disposable dis = locations
                 .subscribeOn(Schedulers.io())
@@ -51,7 +55,6 @@ public class MapViewModel extends ViewModel {
                         for (Location location : locations) {
                             markers.add(LocationMaper.map(location));
                         }
-
                         _mapMarkers.postValue(markers);
                     }
                 });

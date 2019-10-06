@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,15 +17,21 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skillup.finalapp.R;
+import com.skillup.finalapp.di.ViewModelFactory;
 import com.skillup.finalapp.presentation.map.MapViewModel;
-
+import dagger.android.support.AndroidSupportInjection;
 import java.util.List;
+import javax.inject.Inject;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public static final String TITTLE = "MAP";
     private GoogleMap mMap;
     private Boolean isMapReady;
+
+    @Inject
+    ViewModelFactory factory;
+
     private MapViewModel viewModel;
 
     // Constructor
@@ -39,8 +43,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(MapViewModel.class);
+        viewModel = new ViewModelProvider(this, factory).get(MapViewModel.class);
 
 
     }
@@ -83,8 +88,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         viewModel.getMapMarkers().observe(this, new Observer<List<MarkerOptions>>() {
             @Override
             public void onChanged(List<MarkerOptions> markerOptions) {
-                markerOptions.addAll(markerOptions);
+
+                for (MarkerOptions markerOption : markerOptions) {
+                    mMap.addMarker(markerOption);
+                }
+
+
+                if(markerOptions.size()>0){
+                    MarkerOptions last = markerOptions.get(0);
+
+                    CameraPosition googlePlex1 = CameraPosition.builder()
+                        .target(last.getPosition())
+                        .zoom(20)
+                        .bearing(0)
+                        .tilt(0)
+                        .build();
+
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex1), 10000, null);
+                }
             }
+
         });
+    }
+
+    public void notifyMy(){
+        // todo use view model
+
     }
 }

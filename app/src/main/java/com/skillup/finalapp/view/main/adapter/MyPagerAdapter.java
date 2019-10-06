@@ -52,4 +52,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         return fragmentTitleList.get(position);
     }
 
+    public void notifyMapFragment(){
+
+
+    }
+
 }

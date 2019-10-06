@@ -7,17 +7,15 @@ import com.skillup.finalapp.data.LocationRepository;
 import com.skillup.finalapp.data.db.entity.Location;
 import com.skillup.finalapp.presentation.add.IAddMarkerPresenter;
 import com.skillup.finalapp.view.add.IAddMarkersView;
-
-
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
 
 @InjectViewState
 public class AddMarkerPresenter extends MvpPresenter<IAddMarkersView> implements IAddMarkerPresenter {
 
-    // LocationRepository
+    // LocationRepository_
     private LocationRepository repository;
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -27,12 +25,10 @@ public class AddMarkerPresenter extends MvpPresenter<IAddMarkersView> implements
 
     // Constructor
 
-    //@Inject
-    public AddMarkerPresenter() {
-
-        //this.repository = repo//sitory;
+    @Inject
+    public AddMarkerPresenter(LocationRepository repository) {
+        this.repository = repository;
     }
-
 
     // Life
 
