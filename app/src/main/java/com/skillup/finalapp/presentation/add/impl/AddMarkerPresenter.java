@@ -9,7 +9,9 @@ import com.skillup.finalapp.presentation.add.IAddMarkerPresenter;
 import com.skillup.finalapp.view.add.IAddMarkersView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.prefs.Preferences;
 import javax.inject.Inject;
 
 @InjectViewState
@@ -45,11 +47,16 @@ public class AddMarkerPresenter extends MvpPresenter<IAddMarkersView> implements
 
     @Override
     public void addLocation() {
-        disposable.add(
-                repository.insertLocation(new Location(mLng, mLat))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> getViewState().showSuccessPopup()));
+
+        Disposable dis = repository.insertLocation(new Location(mLng, mLat))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(() -> {
+                getViewState().showSuccessPopup();
+            });
+
+      disposable.add(dis);
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.skillup.finalapp.data.db.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,6 +18,9 @@ import io.reactivex.Single;
 public interface LocationDao {
     @Query("SELECT * FROM location")
     Single<List<Location>> getAll();
+
+    @Query("SELECT * FROM location")
+    LiveData<List<Location>> getAllLive();
 
     @Query("SELECT * FROM location WHERE id = :id")
     Single<Location> getById(long id);

@@ -17,6 +17,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     private List<String> fragmentTitleList;
 
+
+    AddFragment addFragment;
+    MapFragment mapFragment;
+
     public MyPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
 
@@ -24,6 +28,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
         fragmentTitleList.add(com.skillup.finalapp.view.map.MapFragment.TITTLE);
         fragmentTitleList.add(AddFragment.TITLE);
+
+    addFragment =  AddFragment.newInstance();
+    mapFragment =  MapFragment.newInstance();
     }
 
     // Returns total number of pages
@@ -38,9 +45,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
-                return AddFragment.newInstance();
+                return addFragment;
             case 1: // Fragment # 0 - This will show FirstFragment different title
-                return MapFragment.newInstance();
+                return mapFragment;
             default:
                 return null;
         }
@@ -53,7 +60,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void notifyMapFragment(){
-
+        mapFragment.notifyMe();
 
     }
 

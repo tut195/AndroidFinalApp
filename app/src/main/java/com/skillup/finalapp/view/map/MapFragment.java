@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.skillup.finalapp.R;
 import com.skillup.finalapp.di.ViewModelFactory;
 import com.skillup.finalapp.presentation.map.MapViewModel;
 import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.disposables.Disposable;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -40,6 +42,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         MapFragment fragment = new MapFragment();
         return fragment;
     }
+
+    public MapFragment(){}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,8 +115,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    public void notifyMy(){
-        // todo use view model
+    public void notifyMe(){
+        Toast.makeText(requireContext(), "Fragment shoud be nmotified", Toast.LENGTH_SHORT).show();
+        viewModel.notifyViewModel();
+
 
     }
 }
